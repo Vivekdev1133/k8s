@@ -1,0 +1,95 @@
+Commands used so far in Kubectl : 
+
+
+ -->  kubectl get nodes (returns current cluster)
+
+ -->  kubectl config get-contexts (returns all the running clusters)
+
+ -->  kubectl config use-context kind-kind-test (to move to the current running cluster)
+
+ -->  kubectl cluster-info --context kind-kind-test
+
+ -->  kubectl run ngnix-pod --image=nginx:latest  (to run/cerate a pod with imparative syntax with specified image)
+
+ -->  kubectl create -f file-pod.yaml  (to run/create a pod with declarative syntax)
+      kubectl apply -f test-pod.yaml
+
+ -->  kubectl get pods
+
+ -->  kubectl get all  (returns all the objects running in the cluster)
+ 
+-->  kubectl describe pods <pod_name>  (for troubleshooting)
+
+ -->  kubectl edit pod nginx-pod  (for directly apply neccessary changes to the pod) -->  it will open up a yaml in which we can change it.
+
+ -->  kubectl explain pod  (give explaination about pod object)
+
+ -->  kubectl exec -it nginx-pod -- sh  (to get into that particular pod)  # ls -lrt   # pwd
+
+ --> kubectl run nginx --image=nginx --dry-run=client -o yaml > DryRun.yaml (dry Run a pod and saves a auto generated yaml file, we can apply that yaml after applying some changes)
+
+ --> kubect apply -f replication.yaml
+
+ -->  kubectl apply -f replicaSete.yaml
+
+ -->  kubectl edit rs nginx-rs  (to edit live object. e.g updating replica set from 3 to 5)
+
+ -->  kubectl scale deployment/nginx-deployment --replicas=10  (scalling deployment)
+
+ -->  kubectl set image deployment/nginx-deployment nginx=nginx:sometag
+
+ -->  kubectl autoscale deployment/nginx-deployment --min=10 --max=15 --cpu-percent=80
+
+ -->  kubectl rollout history deploy nginx-deploy  (to get the rollout history)
+
+ -->  kubectl rollout undo deploy nginx-deploy  (to undo the changes)
+
+ -->  kubectl rollout undo deployment/nginx-deployment --to-revision=2  (rollback to specific revision)
+
+ Note : When there are updaets in deployment then, deployment creates a new replicaSet and then scale down old replicaset to 0.
+        When we undo rollback then deployment will scale up old replicaset and then scale down old replicaset to 0.  
+ Note:  ClusterIp (type of a Service) is used to enable internal communication through clusterIp.
+
+ -->  kubectl rollout status deploy nginx-deploy  (to get the rollout status)
+
+ -->  kubectl apply -f nodeport.yaml  (it creates a service to expose our application to the localhost)
+
+ Note : kubernates pods have ips associated with them which are not dynamic, So when pod gets deleted its ip is changed.
+
+ -->  kubectl get ep  (to get all the endpoints)
+
+ -->  kubectl get ns  (get namespaces)
+
+ -->  kubectl  create ns demo
+
+ Note : all the controlplane components resides into kube-system namespace and all the other resources created are in default namespace.
+
+ -->  kubectl get all -n default  (get the components running in namespace)
+
+ -->  kubectl create deploy nginx-demo --image=nginx -n demo-ns
+
+ -->  kubectl get pods -n demo-ns
+
+ -->  kubectl logs pod/myapp -c init-myservice  (get the logs of the init containers)
+
+ -->  docker exec -it kind-test2-worker crictl images (to get the docker images already there on nodes of the cluster)
+
+ -->  
+
+
+ Note : Pod created in different namespace can communicate with each other with their IP but IP is not static okay. 
+      Both namespace has their services exposed and then they can be accessed with service name. (append) domain(FQDN) name of (cat /etc/resolv.conf) this. e.g. svc-demo.svc.cluster.local likewise.
+
+
+
+Commands used so far in kind : 
+
+ -->  kind create cluster --image kindest/node:v1.30.0@sha256:047357ac0cfea04663786a612ba1eaba9702bef25227a794b52890dd8bcd692e   --name kind-test (create a new cluster)
+
+ -->  kind get clusters (get running clusters)
+
+ -->  kind create cluster --image kindest/node:v1.30.0@sha256:047357ac0cfea04663786a612ba1eaba9702bef25227a794b52890dd8bcd692e   --name kind-test2 --config kind-test2-config.yaml  (to create multi node cluster with one master node and other 2 worker nodes)
+
+ -->  kind delete cluster --name <name>
+
+ -->  kind load docker-image docker/getting-started --name kind-test2  (to load local images into the cluster, make sure image is present locally)

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind:  Deployment
+metadata:
+  name: welcome-deploy
+  labels:
+    env: demo
+spec:
+  template:
+    metadata:
+      name: welcome-pod
+      labels:
+        env: demo
+        type: frontend
+    spec:
+      containers:
+      - image: docker/welcome-to-docker:latest
+        name: welcome
+  replicas: 3
+  selector:
+    matchLabels: 
+      env: demo
